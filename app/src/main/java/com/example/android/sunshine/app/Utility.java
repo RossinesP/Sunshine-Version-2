@@ -262,4 +262,11 @@ public class Utility {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getInt(context.getString(R.string.pref_sync_adapter_result), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
     }
+
+    public static void resetCurrentLocation(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(context.getString(R.string.pref_sync_adapter_result), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+        editor.apply();
+    }
 }

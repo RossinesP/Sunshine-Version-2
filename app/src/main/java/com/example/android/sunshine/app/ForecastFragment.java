@@ -295,6 +295,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             case SunshineSyncAdapter.LOCATION_STATUS_SERVER_INVALID:
                 message = R.string.empty_forecast_server_invalid;
                 break;
+            case SunshineSyncAdapter.LOCATION_STATUS_INVALID:
+                message = R.string.empty_forecast_invalid;
+                break;
             default:
                 if (!Utility.isNetworkConnected(getActivity())) {
                     message = R.string.empty_forecast_nonetwork;

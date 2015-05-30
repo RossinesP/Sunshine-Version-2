@@ -98,6 +98,7 @@
     <string name="empty_forecast_nonetwork">No Weather Information Available. No network is unavailable</string>
     <string name="empty_forecast_server_down">No Weather Information Available. The server is unreachable.</string>
     <string name="empty_forecast_server_invalid">No Weather Information Available. The server returned an unexpected value.</string>
+    <string name="empty_forecast_invalid">No Weather Information Available. This location does not exist.</string>
     <string name="pref_sync_adapter_result">sync_result</string>
 
 </resources>
