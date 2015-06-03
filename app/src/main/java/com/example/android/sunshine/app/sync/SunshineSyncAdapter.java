@@ -158,7 +158,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             getWeatherDataFromJson(forecastJsonStr, locationQuery);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error ", e);
-            setLocationStatus(getContext(), LOCATION_STATUS_SERVER_DOWN);
+            setLocationStatus(getContext(), LOCATION_STATUS_INVALID);
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
         } catch (JSONException e) {

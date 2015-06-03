@@ -17,12 +17,16 @@ package com.example.android.sunshine.app;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -33,8 +37,9 @@ import android.preference.PreferenceManager;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity
-        implements Preference.OnPreferenceChangeListener {
+        implements Preference.OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener{
 
+    private final static String TAG = SettingsActivity.class.getSimpleName();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,20 @@ public class SettingsActivity extends PreferenceActivity
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 
     /**
@@ -76,6 +95,24 @@ public class SettingsActivity extends PreferenceActivity
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
+        } else if (preference.getKey().equals(getString(R.string.pref_location_key))){
+            SunshineSyncAdapter.syncImmediately(this);
+            Log.v(TAG, "onPreferenceChange, location preference");
+            @SunshineSyncAdapter.LocationStatus int locationStatus = Utility.getLocationStatus(this);
+            switch (locationStatus) {
+                case SunshineSyncAdapter.LOCATION_STATUS_OK:
+                    preference.setSummary(value.toString());
+                    break;
+                case SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN:
+                    preference.setSummary(getString(R.string.pref_location_validating, value.toString()));
+                    break;
+                case SunshineSyncAdapter.LOCATION_STATUS_INVALID:
+                    preference.setSummary(getString(R.string.pref_location_invalid, value.toString()));
+                    break;
+                default:
+                    preference.setSummary(value.toString());
+                    break;
+            }
         } else {
             // For other preferences, set the summary to the value's simple string representation.
             preference.setSummary(stringValue);
@@ -91,5 +128,29 @@ public class SettingsActivity extends PreferenceActivity
     @Override
     public Intent getParentActivityIntent() {
         return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        Log.v(TAG, "onSharedPreferenceChanged");
+        Preference preference = findPreference(getString(R.string.pref_location_key));
+        String location = sharedPreferences.getString(getString(R.string.pref_location_key), "");
+        Log.v(TAG, "Location : " + location);
+        @SunshineSyncAdapter.LocationStatus int locationStatus = Utility.getLocationStatus(this);
+        Log.v(TAG, "Location status : " + locationStatus);
+        switch(locationStatus) {
+            case SunshineSyncAdapter.LOCATION_STATUS_OK:
+                preference.setSummary(location);
+                break;
+            case SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN:
+                preference.setSummary(getString(R.string.pref_location_validating, location));
+                break;
+            case SunshineSyncAdapter.LOCATION_STATUS_INVALID:
+                preference.setSummary(getString(R.string.pref_location_invalid, location));
+                break;
+            default:
+                preference.setSummary(location);
+                break;
+        }
     }
 }
