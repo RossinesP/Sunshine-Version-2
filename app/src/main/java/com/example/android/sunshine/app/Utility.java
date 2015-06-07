@@ -21,11 +21,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
+import android.util.Log;
 
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Utility {
@@ -251,6 +253,49 @@ public class Utility {
         return -1;
     }
 
+    /**
+     * Helper method to provide the art resource url according to the weather condition id returned
+     * by the OpenWeatherMap call.
+     * @param weatherId from OpenWeatherMap API response
+     * @return resource id for the corresponding icon. -1 if no relation is found.
+     */
+    public static String getArtUrlForWeatherCondition(Context context, int weatherId) {
+        String iconPack = getPreferredIconSet(context);
+        String[] urlArray;
+        if (iconPack.equals(context.getString(R.string.pref_icons_mono))) {
+            urlArray = context.getResources().getStringArray(R.array.icons_mono);
+        } else {
+            urlArray = context.getResources().getStringArray(R.array.icons_colored);
+        }
+        String result = urlArray[0];
+        // Based on weather code data found at:
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if (weatherId >= 200 && weatherId <= 232) {
+            result = urlArray[9]; // Storm
+        } else if (weatherId >= 300 && weatherId <= 321) {
+            result = urlArray[6]; // Light rain
+        } else if (weatherId >= 500 && weatherId <= 504) {
+            result = urlArray[7]; // Rain
+        } else if (weatherId == 511) {
+            result = urlArray[8]; // Snow
+        } else if (weatherId >= 520 && weatherId <= 531) {
+            result = urlArray[7]; // Rain
+        } else if (weatherId >= 600 && weatherId <= 622) {
+            result = urlArray[8]; // Snow
+        } else if (weatherId >= 701 && weatherId <= 761) {
+            result = urlArray[4]; // Fog
+        } else if (weatherId == 761 || weatherId == 781) {
+            result = urlArray[9]; // Storm
+        } else if (weatherId == 800) {
+            result = urlArray[2]; // Clear
+        } else if (weatherId == 801) {
+            result = urlArray[5]; // Light clouds
+        } else if (weatherId >= 802 && weatherId <= 804) {
+            result = urlArray[3]; // Clouds
+        }
+        return result;
+    }
+
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
@@ -268,5 +313,10 @@ public class Utility {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(context.getString(R.string.pref_sync_adapter_result), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
         editor.apply();
+    }
+
+    public static String getPreferredIconSet(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(context.getString(R.string.pref_icons_key), context.getString(R.string.pref_icons_colored));
     }
 }

@@ -86,12 +86,14 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         return super.onOptionsItemSelected(item);
     }
 
+    private String mIconPack;
+
     @Override
     protected void onResume() {
         super.onResume();
         String location = Utility.getPreferredLocation( this );
         // update the location in our second pane using the fragment manager
-            if (location != null && !location.equals(mLocation)) {
+        if (location != null && !location.equals(mLocation)) {
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
             if ( null != ff ) {
                 ff.onLocationChanged();
@@ -101,6 +103,17 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                 df.onLocationChanged(location);
             }
             mLocation = location;
+        }
+
+        if (mIconPack == null || !Utility.getPreferredIconSet(this).equals(mIconPack)) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            if ( null != ff ) {
+                ff.onIconPackChanged();
+            }
+            DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if ( null != df ) {
+                df.onIconPackChanged();
+            }
         }
     }
 

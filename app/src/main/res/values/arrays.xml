@@ -10,4 +10,39 @@
         <item>@string/pref_units_metric</item>
         <item>@string/pref_units_imperial</item>
     </string-array>
+
+    <string-array name="pref_icons_options">
+        <item>@string/pref_icons_mono_label</item>
+        <item>@string/pref_icons_colored_label</item>
+    </string-array>
+
+    <string-array name="pref_icons_values">
+        <item>@string/pref_icons_mono</item>
+        <item>@string/pref_icons_colored</item>
+    </string-array>
+    <string-array name="icons_mono">
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/3.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/4.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_clear.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_clouds.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_fog.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_light_clouds.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_light_rain.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_rain.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_snow.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Mono/art_storm.png</item>
+    </string-array>
+
+    <string-array name="icons_colored">
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/3.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/4.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_clear.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_clouds.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_fog.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_light_clouds.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_light_rain.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_rain.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_snow.png</item>
+        <item>https://raw.githubusercontent.com/udacity/sunshine_icons/master/Archive/Colored/art_storm.png</item>
+    </string-array>
 </resources>
